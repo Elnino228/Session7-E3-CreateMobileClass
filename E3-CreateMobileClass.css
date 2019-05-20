@@ -1,0 +1,70 @@
+#myCanvas{
+    border-radius: 20px;
+}
+textarea {
+
+}
+#Iphone{
+    position: relative;
+    left: 300px;
+    top: -485px;
+}
+input[type=button]{
+    border-radius: 10px;
+}
+#frameNokia{
+    border-radius: 20px;
+    background-color: yellow;
+}
+#frameIphone{
+    border-radius: 20px;
+    background-color: red;
+}
+input[type=button] {
+    width: 95px;
+    height: 30px;
+}
+fieldset {
+    width: 90px;
+    height: 450px;
+}
+/*#send-Nokia{*/
+/*    position: absolute;*/
+/*    left: 140px;*/
+/*    top: 170px;*/
+/*}*/
+/*#send-Iphone{*/
+/*    position: absolute;*/
+/*    left: 140px;*/
+/*    top: 467px;*/
+/*}*/
+#status-Nokia{
+    position: absolute;
+    left: 30px;
+    top: 35px;
+}
+#status-Iphone{
+    position: absolute;
+    left: 20px;
+    top: 25px;
+}
+#battery-Nokia{
+    position: absolute;
+    left: 140px;
+    top: 35px;
+}
+#battery-Iphone{
+    position: absolute;
+    left: 130px;
+    top: 25px;
+}
+#screen-Nokia{
+    position: relative;
+    left: 0px;
+    top: 20px;
+}
+#screen-Iphone{
+    position: relative;
+    left: 0px;
+    top: 20px;
+}

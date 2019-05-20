@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="E3-CreateMobileClass.css">
+</head>
+<body>
+<!--<canvas id="myCanvas" width='270px' height='500px' style="border: 1px solid #d3d3d3;"></canvas>-->
+<script>
+    let l = console.log;
+    var Mobile = function (name) {
+        this.name = name;
+        this.battery = 100;
+        this.typing = [];
+        this.message = '';
+        this.inbox = [];
+        this.outbox = [];
+        this.status = true;
+        this.checkStatus = function () {
+            return this.status;
+        };
+        this.onOff = function (value) {
+            if (value == 'Off') {
+                this.status = false;
+            } else if (value == 'On') {
+                this.status = true;
+            }
+            this.battery--;
+        };
+        this.charging = function () {
+            if (this.battery < 100) {
+                this.battery++;
+            }
+        };
+        this.writeMess = function (msg) {
+            if (this.checkStatus) {
+                this.message = msg;
+                this.battery--;
+            } else alert('Dien thoai dang bi tat');
+
+        };
+        this.sendMess = function (toPhone) {
+            l(this.checkStatus)
+            if (this.checkStatus()) {
+                //lưu vao inbox của đt nhận
+                toPhone.inbox.push(this.message);
+                //lưu vào outbox của đt gửi
+                this.outbox.push(this.message);
+                this.battery--;
+            } else {
+                alert('Dien thoai dang bi tat');
+            }
+        };
+        //hiển thị tin nhắn đến
+        this.viewInbox = function () {
+            if (this.checkStatus()) {
+                this.battery--;
+                let listMsg = 'Inbox:\n';
+                for (let i = 0; i < this.inbox.length; i++) {
+                    listMsg += 'Message ' + (i + 1) + ': ' + this.inbox[i] + '\n';
+                }
+                return listMsg;
+            } else {
+                alert('Dien thoai dang bi tat');
+                listMsg = '';
+                return listMsg;
+
+            }
+        };
+        //hiện thị tin nhắn đi
+        this.viewOutbox = function () {
+            if (this.checkStatus()) {
+                this.battery--;
+                let listMsg = 'Outbox:\n';
+                for (let i = 0; i < this.outbox.length; i++) {
+                    listMsg += 'Message ' + (i + 1) + ': ' + this.outbox[i] + '\n';
+                }
+                return listMsg;
+            } else {
+                alert('Dien thoai dang bi tat');
+                listMsg = '';
+                return listMsg;
+
+            }
+        };
+        this.newMess = function () {
+
+        }
+    };
+    let nokia = new Mobile('Nokia');
+    let iphone = new Mobile('Iphone');
+    createMobileDisplay(nokia);
+    createMobileDisplay(iphone);
+
+    function createMobileDisplay(mobile) {
+        let str = '<div id="' + mobile.name + '"><fieldset id="frame' + mobile.name + '" style="text-align: center">' + mobile.name;
+        str += '<br><label id="status-' + mobile.name + '" >Status: On</label>';
+        str += '<label id="battery-' + mobile.name + '" >Battery: ' + mobile.battery + '</label>';
+        str += '<tr><textarea cols="25" rows="20" id ="screen-' + mobile.name + '"' + '></textarea></tr>';
+        str += '<br><br><br>';
+        str += '<tr><td><input type="button" value="Off" id="on-' + mobile.name + '"' + 'onclick="onOff' + mobile.name + '(this.id)"/></td>';
+        str += '<tr><td><input type="button" value="Charge" id="on-' + mobile.name + '"' + 'onclick="charging' + mobile.name + '(this.id)"/></td>';
+        str += '<br>';
+        str += '<td><input type="button" value="New Message" id="newMess-' + mobile.name + '"' + 'onclick="newMess' + mobile.name + '(this.id)"></td></tr>';
+        str += '<tr><td><input type="button" value="Send" id="send-' + mobile.name + '"' + 'onclick="send' + mobile.name + '(this.id)"/></td>';
+        str += '<br>';
+        str += '<tr><td><input type="button" value="Inbox" id="viewInbox-' + mobile.name + '"' + 'onclick="viewInbox' + mobile.name + '(this.id)"></td>';
+        str += '<td><input type="button" value="OutBox" id="viewOutbox-' + mobile.name + '"' + 'onclick="viewOutbox' + mobile.name + '(this.id)"></td></tr>';
+        str += '</fieldset><br></div>';
+        document.write(str);
+    }
+
+    function onOffNokia(statusId) {
+        value = document.getElementById(statusId).value;
+        nokia.onOff(value);
+        l(nokia.status)
+        if (nokia.status) {
+            document.getElementById(statusId).value = 'Off'
+            document.getElementById('status-Nokia').innerHTML = 'Status: On';
+        } else {
+            document.getElementById(statusId).value = 'On'
+            document.getElementById('status-Nokia').innerHTML = 'Status: Off';
+            document.getElementById('screen-Nokia').value = '';
+        }
+        document.getElementById('battery-Nokia').innerHTML = 'Battery: ' + nokia.battery;
+    }
+
+    function onOffIphone(statusId) {
+        value = document.getElementById(statusId).value;
+        iphone.onOff(value);
+        if (iphone.status) {
+            document.getElementById(statusId).value = 'Off'
+            document.getElementById('status-Iphone').innerHTML = 'Status: On';
+        } else {
+            document.getElementById(statusId).value = 'On'
+            document.getElementById('status-Iphone').innerHTML = 'Status: Off';
+            document.getElementById('screen-Iphone').value = '';
+
+        }
+        document.getElementById('battery-Iphone').innerHTML = 'Battery: ' + iphone.battery;
+    }
+
+    function newMessNokia() {
+        //l(document.getElementById('screen-Nokia').focus());
+        if (nokia.checkStatus()) {
+            document.getElementById('screen-Nokia').value = '';
+            document.getElementById('screen-Nokia').focus();
+        } else alert('Dien thoai dang bi tat');
+
+    }
+
+    function newMessIphone() {
+        if (iphone.checkStatus()) {
+            document.getElementById('screen-Iphone').value = '';
+            document.getElementById('screen-Iphone').focus();
+        } else alert('Dien thoai dang bi tat');
+    }
+
+    function sendNokia() {
+        let mess = document.getElementById('screen-Nokia').value;
+        if (mess == '' || mess.slice(0, 5) == 'Inbox' || mess.slice(0, 6) == 'Outbox') {
+            alert('Ban chua soan tin nhan');
+        } else {
+            nokia.message = document.getElementById('screen-Nokia').value;
+            nokia.sendMess(iphone);
+            document.getElementById('screen-Nokia').value = '';
+            document.getElementById('battery-Nokia').innerHTML = 'Battery: ' + nokia.battery;
+        }
+    }
+
+    function sendIphone() {
+        let mess = document.getElementById('screen-Iphone').value;
+        if (mess == '' || mess.slice(0, 5) == 'Inbox' || mess.slice(0, 6) == 'Outbox') {
+            alert('Ban chua soan tin nhan');
+        } else {
+            iphone.message = document.getElementById('screen-Iphone').value;
+            iphone.sendMess(nokia);
+            document.getElementById('screen-Iphone').value = '';
+            document.getElementById('battery-Iphone').innerHTML = 'Battery: ' + iphone.battery;
+        }
+    }
+
+    function viewInboxNokia() {
+        document.getElementById('screen-Nokia').value = nokia.viewInbox();
+        document.getElementById('battery-Nokia').innerHTML = 'Battery: ' + nokia.battery;
+    }
+
+    function viewInboxIphone() {
+        document.getElementById('screen-Iphone').value = iphone.viewInbox();
+        document.getElementById('battery-Iphone').innerHTML = 'Battery: ' + iphone.battery;
+    }
+
+    function viewOutboxNokia() {
+        document.getElementById('screen-Nokia').value = nokia.viewOutbox();
+
+    }
+
+    function viewOutboxIphone() {
+        document.getElementById('screen-Iphone').value = iphone.viewOutbox();
+        document.getElementById('battery-Iphone').innerHTML = 'Battery: ' + iphone.battery;
+    }
+
+    function chargingNokia() {
+        if (nokia.battery == 100) return;
+        nokia.charging();
+        document.getElementById('battery-Nokia').innerHTML = 'Battery: ' + nokia.battery;
+        setTimeout(chargingNokia, 1000);
+    }
+
+    function chargingIphone() {
+        if (iphone.battery == 100) return;
+        iphone.charging();
+        document.getElementById('battery-Iphone').innerHTML = 'Battery: ' + iphone.battery;
+        setTimeout(chargingIphone, 1000);
+    }
+</script>
+</body>
+</html>
